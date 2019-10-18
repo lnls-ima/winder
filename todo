@@ -1,0 +1,14 @@
+-> Abas
+	-> Controle
+		- pbt_jog_p
+		- pbt_jog_m
+		- pbt_zero
+		- lcd_turn_counter
+		-> Des/Bobinar:
+			-> Le posição
+			-> Calcula perfil de velocidade PVT
+			- Envia velocidade e sentido
+			- Inicia movimento
+		-> le se motor está ligado
+	-> Config
+		-> database
