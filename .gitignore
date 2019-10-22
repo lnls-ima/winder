@@ -124,3 +124,6 @@ local.properties
 
 # Pascal files
 *.pas
+
+# todo
+todo
