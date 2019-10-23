@@ -35,7 +35,7 @@ class WinderWindow(_QMainWindow):
         # add widgets to main tab
         self.ui.twg_main_tab.clear()
         for i in range(len(self.tab_names)):
-            tab_name = self.tab_names[i].capitalize()
+            tab_name = self.tab_names[i]
             tab = self.tab_widgets[i]
             setattr(self, tab_name, tab)
-            self.ui.twg_main_tab.addTab(tab, tab_name)
+            self.ui.twg_main_tab.addTab(tab, tab_name.capitalize())
