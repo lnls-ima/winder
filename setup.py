@@ -19,11 +19,7 @@ setup(
     install_requires=[
         'qtpy',
     ],
-    package_data={
-        'gui': ['*.ui'],
-        'resources': ['*'],
-        'winder': ['VERSION'],
-    },
     test_suite='nose.collector',
     tests_require=['nose'],
-    zip_safe=False)
+    zip_safe=False,
+    include_package_data=True)
