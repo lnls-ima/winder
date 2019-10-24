@@ -48,8 +48,14 @@ class ConfigWidget(_QWidget):
         self.mdriver.disconnect()
 
     def save(self):
-        """Save current configuration."""
-        pass
+        """Save current configuration to file."""
+        filename = self.ui.cmb_config.currentText()
+        self.config.save_file(filename)
+
+    def load(self):
+        """Loads configuration set."""
+        filename = self.ui.cmb_config.currentText()
+        self.config.read_file(filename)
 
     def configure(self):
         """Configures the winder with the current widget values."""
@@ -76,7 +82,3 @@ class ConfigWidget(_QWidget):
                                        steps=_st0, usteps=_ust0)
         self.mdriver.configure_stepper(motor=1, mtype=_mt1, spd=_spd1, ac=_ac1,
                                        steps=_st1, usteps=_ust1)
-
-    def load(self):
-        """Loads configuration set."""
-        pass

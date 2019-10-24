@@ -33,6 +33,7 @@ class ControlWidget(_QWidget):
 
         self.counter_timer = _QTimer()
         self.update_time = 20
+        self.counts = 0.0  # current number of turns
 
         # connect signals and slots
         self.connect_signals_slots()
@@ -50,6 +51,7 @@ class ControlWidget(_QWidget):
 
     def clear_counter(self):
         """Sets current position as zero and clears lcd counter."""
+        self.counts = 0.0
         self.ui.lcd_turn_counter.display(0)
         self.mdriver.set_position(motor=0, position=0)
         self.mdriver.set_position(motor=1, position=0)
@@ -57,11 +59,11 @@ class ControlWidget(_QWidget):
     def update_counter(self):
         """Updates the lcd turn counter."""
         pos = self.mdriver.read_positions()[0]
-        self.config.counts = pos / (self.config.steps0 * self.config.usteps0)
-        if self.config.counts >= self.config.nturns:
+        self.counts = pos / (self.config.steps0 * self.config.usteps0)
+        if self.counts >= self.config.nturns:
             self.stop()
             self.counter_timer.stop()
-        self.ui.lcd_turn_counter.display(self.config.counts)
+        self.ui.lcd_turn_counter.display(self.counts)
 
     def jog_negative(self):
         """Unwind the coil."""
@@ -79,7 +81,7 @@ class ControlWidget(_QWidget):
     def jog_positive(self):
         """Wind the coil."""
         self.update_counter()
-        if self.config.counts < self.config.nturns:
+        if self.counts < self.config.nturns:
             self.counter_timer.start(self.update_time)
             _motors = [1, 1, 0, 0, 0, 0, 0, 0]
             _i = self.ui.cmb_motor.currentIndex()
