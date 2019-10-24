@@ -14,7 +14,8 @@ class WinderConfig():
         self.ac = 0.0  # winding acceleration in rev/s^2
         self.lc = 0.0  # coil lengh in mm
         self.d = 0.0  # wire diameter in mm
-        self.nturns = 0  # number of turns
+        self.nturns = 0  # total number of turns
+        self.counts = 0  # current number of turns
 
         # Galil configuration
         self.ip = '10.0.28.113'

@@ -57,8 +57,11 @@ class ControlWidget(_QWidget):
     def update_counter(self):
         """Updates the lcd turn counter."""
         pos = self.mdriver.read_positions()[0]
-        counts = pos / (self.config.steps0 * self.config.usteps0)
-        self.ui.lcd_turn_counter.display(counts)
+        self.config.counts = pos / (self.config.steps0 * self.config.usteps0)
+        if self.config.counts >= self.config.nturns:
+            self.stop()
+            self.counter_timer.stop()
+        self.ui.lcd_turn_counter.display(self.config.counts)
 
     def jog_negative(self):
         """Unwind the coil."""
@@ -69,24 +72,24 @@ class ControlWidget(_QWidget):
             _motors[1] = 0
         elif _i == 2:
             _motors[0] = 0
-        self.mdriver.jog(motor=0, spd=self.config.spd0,
-                         pos_direction=False)
-        self.mdriver.jog(motor=1, spd=self.config.spd1,
-                         pos_direction=False)
+        self.mdriver.jog(motor=0, spd=self.config.spd0, pos_direction=False)
+        self.mdriver.jog(motor=1, spd=self.config.spd1, pos_direction=False)
         self.mdriver.begin_motion(_motors)
 
     def jog_positive(self):
         """Wind the coil."""
-        self.counter_timer.start(self.update_time)
-        _motors = [1, 1, 0, 0, 0, 0, 0, 0]
-        _i = self.ui.cmb_motor.currentIndex()
-        if _i == 1:
-            _motors[1] = 0
-        elif _i == 2:
-            _motors[0] = 0
-        self.mdriver.jog(motor=0, spd=self.config.spd0, pos_direction=True)
-        self.mdriver.jog(motor=1, spd=self.config.spd1, pos_direction=True)
-        self.mdriver.begin_motion(_motors)
+        self.update_counter()
+        if self.config.counts < self.config.nturns:
+            self.counter_timer.start(self.update_time)
+            _motors = [1, 1, 0, 0, 0, 0, 0, 0]
+            _i = self.ui.cmb_motor.currentIndex()
+            if _i == 1:
+                _motors[1] = 0
+            elif _i == 2:
+                _motors[0] = 0
+            self.mdriver.jog(motor=0, spd=self.config.spd0, pos_direction=True)
+            self.mdriver.jog(motor=1, spd=self.config.spd1, pos_direction=True)
+            self.mdriver.begin_motion(_motors)
 
     def stop(self):
         """Stops all motor movement."""
