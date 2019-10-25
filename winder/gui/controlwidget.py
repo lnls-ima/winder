@@ -4,7 +4,6 @@
 # import traceback as _traceback
 from qtpy.QtWidgets import (
     QWidget as _QWidget,
-    QApplication as _QApplication
 #     QMessageBox as _QMessageBox,
     )
 from qtpy.QtCore import (
